@@ -1,116 +1,164 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - CERTIFY</title>
 
-{% block title %}Home - CERTIFY{% endblock %}
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
 
-{% block content %}
-<!-- ✅ Background Section -->
-<div class="picture">
-    <div class="text-box">
-        <h1 class="fw-bold">CERTIFY</h1>
-        <p>Where Every Show Begins</p>
-        <a href="{{ url_for('dashboard') }}" class="hero-btn">BOOK NOW</a>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <!-- Background Section -->
+    <div class="picture">
+        <div class="text-box">
+            <h1 class="fw-bold">CERTIFY</h1>
+            <p>Where Every Show Begins</p>
+            <a href="dashboard.html" class="hero-btn">BOOK NOW</a>
+        </div>
     </div>
-</div>
-    
-<!-- ✅ Venues Section -->
-<div class="main-content container-fluid py-4">
-    <h2 class="text-center fw-bold mb-4">VENUES</h2>
 
-    <div class="row g-4">
-        {% for venue in venues %}
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card shadow p-3 h-100">
-                <!-- ✅ Venue Image -->
-                <img src="{{ url_for('static', filename='images/' + venue.name|replace(' ', '_') + '.jpg') }}" 
-                     class="card-img-top" 
-                     alt="{{ venue.name }}" 
-                     style="height: 200px; object-fit: cover;">
+    <!-- Venues Section -->
+    <div class="main-content container-fluid py-4">
+        <h2 class="text-center fw-bold mb-4">VENUES</h2>
 
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ venue.name }}</h5>
-                    <p class="card-text"><strong>Location:</strong> {{ venue.location }}</p>
-                    <p class="card-text"><strong>Capacity:</strong> {{ venue.capacity }} seats</p>
+        <div class="row g-4">
 
-                    <p class="card-text"><strong>Pricing:</strong></p>
-                    <ul class="list-unstyled">
-                        <li>Morning: ₱{{ "{:,.2f}".format(venue.morning_price) }}</li>
-                        <li>Afternoon: ₱{{ "{:,.2f}".format(venue.afternoon_price) }}</li>
-                        <li>Evening: ₱{{ "{:,.2f}".format(venue.evening_price) }}</li>
-                    </ul>
+            <!-- Venue Card -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card shadow p-3 h-100">
+                    <img src="images/MOA_Arena.jpg" 
+                        class="card-img-top"
+                        alt="MOA Arena"
+                        style="height: 200px; object-fit: cover;" />
 
-                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-auto">Book Now</a>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">MOA Arena</h5>
+                        <p><strong>Location:</strong> Pasay City</p>
+                        <p><strong>Capacity:</strong> 15,000 seats</p>
+
+                        <p><strong>Pricing:</strong></p>
+                        <ul class="list-unstyled">
+                            <li>Morning: ₱120,000.00</li>
+                            <li>Afternoon: ₱150,000.00</li>
+                            <li>Evening: ₱200,000.00</li>
+                        </ul>
+
+                        <a href="dashboard.html" class="btn btn-primary mt-auto">Book Now</a>
+                    </div>
                 </div>
             </div>
+
+            <!-- Duplicate venue cards as needed (React will loop through data) -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card shadow p-3 h-100">
+                    <img src="images/Philippine_Arena.jpg"
+                        class="card-img-top"
+                        alt="Philippine Arena"
+                        style="height: 200px; object-fit: cover;" />
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Philippine Arena</h5>
+                        <p><strong>Location:</strong> Bulacan</p>
+                        <p><strong>Capacity:</strong> 55,000 seats</p>
+
+                        <p><strong>Pricing:</strong></p>
+                        <ul class="list-unstyled">
+                            <li>Morning: ₱300,000.00</li>
+                            <li>Afternoon: ₱350,000.00</li>
+                            <li>Evening: ₱500,000.00</li>
+                        </ul>
+
+                        <a href="dashboard.html" class="btn btn-primary mt-auto">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more venue cards here -->
+
         </div>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- ✅ Events Section -->
-<div class="ms-3 me-3 pt-3">
-    <h2 class="text-center fw-bold mb-4">Upcoming Events</h2>
-
-    <!-- ✅ Sorting Dropdown -->
-    <div class="mb-4 text-center">
-        <label for="sort" class="fw-bold">Sort by:</label>
-        <select id="sort" class="form-select w-auto d-inline-block" onchange="sortEvents()">
-            <option value="date" {% if request.args.get('sort', 'date') == 'date' %}selected{% endif %}>Date</option>
-            <option value="time_slot" {% if request.args.get('sort') == 'time_slot' %}selected{% endif %}>Time Slot</option>
-            <option value="venue" {% if request.args.get('sort') == 'venue' %}selected{% endif %}>Venue</option>
-            <option value="agency" {% if request.args.get('sort') == 'agency' %}selected{% endif %}>Agency</option>
-            <option value="all" {% if request.args.get('sort') == 'all' %}selected{% endif %}>All</option>
-        </select>
     </div>
 
-    <!-- ✅ Events Table -->
-    <div class="table-responsive">
-        <table class="table table-hover text-center align-middle">
-            <thead class="table-dark sticky-header">
-                <tr>
-                    <th>Venue</th>
-                    <th>Concert Title</th>
-                    <th>Artist</th>
-                    <th>Agency</th>
-                    <th>Date</th>
-                    <th>Time Slot</th>
-                </tr>
-            </thead>
-            <tbody id="events-table">
-                {% for event in events %}
-                <tr {% if event.date < today and request.args.get('sort') != 'all' %}style="display: none;"{% endif %}>
-                    <td>{{ event.venue.name }}</td>
-                    <td>{{ event.concert_title }}</td>
-                    <td>{{ event.artist_name }}</td>
-                    <td>{{ event.user.agency_name }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.time_slot }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>    
-</div>
+    <!-- Upcoming Events Section -->
+    <div class="ms-3 me-3 pt-3">
 
-<!-- ✅ Sorting JavaScript with Scroll Position Fix -->
-<script>
-    function sortEvents() {
-        let sortValue = document.getElementById("sort").value;
+        <h2 class="text-center fw-bold mb-4">Upcoming Events</h2>
 
-        // Save scroll position before reloading
-        localStorage.setItem("scrollPosition", window.scrollY);
+        <!-- Sorting Dropdown -->
+        <div class="mb-4 text-center">
+            <label class="fw-bold">Sort by:</label>
+            <select id="sort" class="form-select w-auto d-inline-block">
+                <option value="date" selected>Date</option>
+                <option value="time_slot">Time Slot</option>
+                <option value="venue">Venue</option>
+                <option value="agency">Agency</option>
+                <option value="all">All</option>
+            </select>
+        </div>
 
-        // Redirect with sorting parameter
-        window.location.href = "{{ url_for('home') }}?sort=" + sortValue;
-    }
+        <!-- Events Table -->
+        <div class="table-responsive">
+            <table class="table table-hover text-center align-middle">
+                <thead class="table-dark sticky-header">
+                    <tr>
+                        <th>Venue</th>
+                        <th>Concert Title</th>
+                        <th>Artist</th>
+                        <th>Agency</th>
+                        <th>Date</th>
+                        <th>Time Slot</th>
+                    </tr>
+                </thead>
 
-    // Restore scroll position after page reloads
-    window.onload = function () {
-        let scrollPosition = localStorage.getItem("scrollPosition");
-        if (scrollPosition !== null) {
-            window.scrollTo(0, scrollPosition); // Restore scroll position
-            localStorage.removeItem("scrollPosition"); // Remove storage after restoring
+                <tbody id="events-table">
+
+                    <!-- Example Event Row -->
+                    <tr>
+                        <td>MOA Arena</td>
+                        <td>Music of the Spheres</td>
+                        <td>Coldplay</td>
+                        <td>Sunrise Agency</td>
+                        <td>2025-05-14</td>
+                        <td>Evening</td>
+                    </tr>
+
+                    <!-- Add more event rows here -->
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sorting Script -->
+    <script>
+        function sortEvents() {
+            let sortValue = document.getElementById("sort").value;
+
+            // Save scroll
+            localStorage.setItem("scrollPosition", window.scrollY);
+
+            // Redirect (React/Next.js will replace this logic anyway)
+            window.location.href = "home.html?sort=" + sortValue;
         }
-    };
-</script>
 
-{% endblock %}
+        window.onload = function () {
+            let scrollPosition = localStorage.getItem("scrollPosition");
+            if (scrollPosition !== null) {
+                window.scrollTo(0, scrollPosition);
+                localStorage.removeItem("scrollPosition");
+            }
+        };
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
