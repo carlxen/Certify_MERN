@@ -1,0 +1,875 @@
+//base.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venue Booking System</title>
+
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light px-3" id="mainNavbar">
+        <a class="navbar-brand" href="#">CERTIFY</a>
+
+        <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Replace these with React routes later -->
+                <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Venues</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+
+                <!-- If user not logged in, replace above with: -->
+                <!-- <li class="nav-item"><a class="nav-link" href="#">Login</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages (Static Placeholder) -->
+    <div class="ms-1 me-1 mt-5 pt-1">
+        <!-- Example flash message -->
+        <div class="alert alert-success">Welcome back!</div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="content-wrapper">
+        <div class="container">
+            <!-- Insert your page content here -->
+            <h2>Page Content Here</h2>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="contain">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="footer-col text-left">
+                    <h4>© 2025 Certify Philippines. Certify® is a registered trademark of Certify Entertainment.</h4>
+                </div>
+
+                <!-- Right Column -->
+                <div class="footer-col links-right">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Venues</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/YOUR-FONT-AWESOME-KIT.js" crossorigin="anonymous"></script>
+
+    <!-- Navbar Scroll Effect -->
+    <script>
+        window.onscroll = function () {
+            var navbar = document.getElementById("mainNavbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("navbar-transparent");
+            } else {
+                navbar.classList.remove("navbar-transparent");
+            }
+        };
+    </script>
+
+</body>
+</html>
+
+dashboard.html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <div class="ms-3 me-3 mb-5 mt-5">
+
+        <!-- Arena Slideshow -->
+        <div id="arenaCarousel" class="carousel slide mb-4 shadow-lg rounded overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="images/MOA_Arena.jpg" class="d-block w-100 carousel-img" alt="MOA Arena">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/Philippine_Arena.jpg" class="d-block w-100 carousel-img" alt="Philippine Arena">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/Araneta_Coliseum.jpg" class="d-block w-100 carousel-img" alt="Araneta Coliseum">
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#arenaCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon custom-arrow"></span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#arenaCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon custom-arrow"></span>
+            </button>
+        </div>
+
+        <div class="container mt-5">
+            <div class="ms-3 me-3 mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h2>Welcome back, Agency Name (username)!</h2>
+
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#bookingForm">
+                        ➕ Add a Booking
+                    </button>
+                </div>
+
+                <!-- Sorting Dropdown -->
+                <div class="mb-4">
+                    <label for="sort" class="fw-bold">Sort by:</label>
+                    <select id="sort" class="form-select w-auto d-inline-block">
+                        <option value="date" selected>Date</option>
+                        <option value="artist">Artist Name</option>
+                        <option value="venue">Venue</option>
+                    </select>
+                </div>
+
+                <div class="row">
+
+                    <!-- Left: Booking Table -->
+                    <div class="col-lg-8">
+                        <h3 class="mb-4 fw-bold text-dark">Your Bookings</h3>
+
+                        <div class="table-responsive shadow-lg rounded">
+                            <table class="table align-middle text-center">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Venue</th>
+                                        <th>Artist</th>
+                                        <th>Date</th>
+                                        <th>Time Slot</th>
+                                        <th>Amount Paid</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="bg-light">
+                                    <tr class="border-bottom">
+                                        <td><b>000123</b></td>
+                                        <td>MOA Arena</td>
+                                        <td>Coldplay</td>
+                                        <td>2025-05-14</td>
+                                        <td>Evening</td>
+                                        <td class="fw-bold text-success">₱150,000.00</td>
+
+                                        <td><span class="badge bg-success p-2">Paid</span></td>
+
+                                        <td class="d-flex gap-2 justify-content-center">
+                                            <a class="btn btn-info btn-sm">View</a>
+                                            <button class="btn btn-danger btn-sm">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Calendar -->
+                    <div class="col-lg-4 mb-5 pt-5">
+                        <div class="cardd shadow p-3 mb-5">
+                            <h5 class="text-center">Today's Date</h5>
+                            <div id="calendar" class="text-center fs-4 text-dark"></div>
+                            <div id="calendar-grid" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="collapse mt-4" id="bookingForm">
+                    <div class="cardd shadow-lg border-0 p-4" style="background: #f8f9fa; border-radius: 12px;">
+                        <h4 class="mb-4 text-dark fw-bold text-center">New Booking</h4>
+
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Artist Name</label>
+                                <input type="text" class="form-control border-0 shadow-sm" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Concert Title</label>
+                                <input type="text" class="form-control border-0 shadow-sm" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Venue</label>
+                                <select class="form-select border-0 shadow-sm">
+                                    <option>MOA Arena</option>
+                                    <option>Philippine Arena</option>
+                                    <option>Araneta Coliseum</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Date</label>
+                                <input type="date" class="form-control border-0 shadow-sm" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Time Slot</label>
+                                <select class="form-select border-0 shadow-sm">
+                                    <option>Morning (8 AM - 12 PM)</option>
+                                    <option>Afternoon (12 PM - 4 PM)</option>
+                                    <option>Evening (4 PM - 11 PM)</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-dark">Payment Method</label>
+                                <select class="form-select border-0 shadow-sm">
+                                    <option>Credit Card</option>
+                                    <option>GCash</option>
+                                    <option>PayPal</option>
+                                    <option>Bank Transfer</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-success w-100 shadow-sm fw-bold">
+                                Confirm Booking
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Calendar Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date();
+            let options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+            document.getElementById("calendar").innerText = today.toLocaleDateString("en-US", options);
+
+            function generateCalendar() {
+                let calendarGrid = document.getElementById("calendar-grid");
+                let firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+                let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+                let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+                let html = `<div class="text-center fw-bold">${today.toLocaleString("en-US", { month: "long", year: "numeric" })}</div>`;
+                html += `<div class="d-grid grid-template-columns-7 text-center mt-2">`;
+
+                for (let d of days) html += `<div class="fw-bold">${d}</div>`;
+                for (let i = 0; i < firstDay; i++) html += `<div></div>`;
+
+                for (let d = 1; d <= lastDate; d++) {
+                    let cls = d === today.getDate() ? "fw-bold text-danger" : "";
+                    html += `<div class="${cls}">${d}</div>`;
+                }
+
+                html += "</div>";
+                calendarGrid.innerHTML = html;
+            }
+
+            generateCalendar();
+        });
+    </script>
+
+    <style>
+        .grid-template-columns-7 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+    </style>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+home.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - CERTIFY</title>
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <!-- Background Section -->
+    <div class="picture">
+        <div class="text-box">
+            <h1 class="fw-bold">CERTIFY</h1>
+            <p>Where Every Show Begins</p>
+            <a href="dashboard.html" class="hero-btn">BOOK NOW</a>
+        </div>
+    </div>
+
+    <!-- Venues Section -->
+    <div class="main-content container-fluid py-4">
+        <h2 class="text-center fw-bold mb-4">VENUES</h2>
+
+        <div class="row g-4">
+
+            <!-- Venue Card -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card shadow p-3 h-100">
+                    <img src="images/MOA_Arena.jpg" 
+                        class="card-img-top"
+                        alt="MOA Arena"
+                        style="height: 200px; object-fit: cover;" />
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">MOA Arena</h5>
+                        <p><strong>Location:</strong> Pasay City</p>
+                        <p><strong>Capacity:</strong> 15,000 seats</p>
+
+                        <p><strong>Pricing:</strong></p>
+                        <ul class="list-unstyled">
+                            <li>Morning: ₱120,000.00</li>
+                            <li>Afternoon: ₱150,000.00</li>
+                            <li>Evening: ₱200,000.00</li>
+                        </ul>
+
+                        <a href="dashboard.html" class="btn btn-primary mt-auto">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duplicate venue cards as needed (React will loop through data) -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card shadow p-3 h-100">
+                    <img src="images/Philippine_Arena.jpg"
+                        class="card-img-top"
+                        alt="Philippine Arena"
+                        style="height: 200px; object-fit: cover;" />
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Philippine Arena</h5>
+                        <p><strong>Location:</strong> Bulacan</p>
+                        <p><strong>Capacity:</strong> 55,000 seats</p>
+
+                        <p><strong>Pricing:</strong></p>
+                        <ul class="list-unstyled">
+                            <li>Morning: ₱300,000.00</li>
+                            <li>Afternoon: ₱350,000.00</li>
+                            <li>Evening: ₱500,000.00</li>
+                        </ul>
+
+                        <a href="dashboard.html" class="btn btn-primary mt-auto">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more venue cards here -->
+
+        </div>
+    </div>
+
+    <!-- Upcoming Events Section -->
+    <div class="ms-3 me-3 pt-3">
+
+        <h2 class="text-center fw-bold mb-4">Upcoming Events</h2>
+
+        <!-- Sorting Dropdown -->
+        <div class="mb-4 text-center">
+            <label class="fw-bold">Sort by:</label>
+            <select id="sort" class="form-select w-auto d-inline-block">
+                <option value="date" selected>Date</option>
+                <option value="time_slot">Time Slot</option>
+                <option value="venue">Venue</option>
+                <option value="agency">Agency</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+
+        <!-- Events Table -->
+        <div class="table-responsive">
+            <table class="table table-hover text-center align-middle">
+                <thead class="table-dark sticky-header">
+                    <tr>
+                        <th>Venue</th>
+                        <th>Concert Title</th>
+                        <th>Artist</th>
+                        <th>Agency</th>
+                        <th>Date</th>
+                        <th>Time Slot</th>
+                    </tr>
+                </thead>
+
+                <tbody id="events-table">
+
+                    <!-- Example Event Row -->
+                    <tr>
+                        <td>MOA Arena</td>
+                        <td>Music of the Spheres</td>
+                        <td>Coldplay</td>
+                        <td>Sunrise Agency</td>
+                        <td>2025-05-14</td>
+                        <td>Evening</td>
+                    </tr>
+
+                    <!-- Add more event rows here -->
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sorting Script -->
+    <script>
+        function sortEvents() {
+            let sortValue = document.getElementById("sort").value;
+
+            // Save scroll
+            localStorage.setItem("scrollPosition", window.scrollY);
+
+            // Redirect (React/Next.js will replace this logic anyway)
+            window.location.href = "home.html?sort=" + sortValue;
+        }
+
+        window.onload = function () {
+            let scrollPosition = localStorage.getItem("scrollPosition");
+            if (scrollPosition !== null) {
+                window.scrollTo(0, scrollPosition);
+                localStorage.removeItem("scrollPosition");
+            }
+        };
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+login.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="mb-5 mt-5">
+    <div class="row justify-content-center mb-4 pt-4">
+        <div class="col-md-6">
+            <h2 class="text-center">Login</h2>
+
+            <form class="shadow p-4 bg-white rounded">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <p class="text-center mt-3">
+                Don't have an account?
+                <a href="signup.html">Sign Up</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+profile.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Settings</title>
+
+    <!-- Bootstrap -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="ms-3 me-3 mb-3">
+    <h2 class="mb-4 pt-4">Profile Settings</h2>
+
+    <!-- Change Username -->
+    <h3>Change Username</h3>
+    <form class="mb-4">
+        <div class="mb-3">
+            <label class="form-label">New Username</label>
+            <input type="text" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Update Username</button>
+    </form>
+
+    <!-- Change Password -->
+    <h3>Change Password</h3>
+    <form>
+        <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input type="password" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Password</button>
+    </form>
+
+    <br />
+
+    <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+receipt.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Receipt</title>
+
+    <!-- Bootstrap -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="ms-3 me-3 pt-4 mb-3">
+
+    <h2 class="receipt">Booking Receipt</h2>
+
+    <div class="cardd shadow">
+        <div class="card-body">
+            <h5 class="card-title">Receipt ID: RECEIPT12345</h5>
+
+            <p><strong>Booked By:</strong> username_here</p>
+            <p><strong>Artist Name:</strong> Example Artist</p>
+            <p><strong>Concert Title:</strong> Example Concert</p>
+            <p><strong>Venue:</strong> Sample Venue</p>
+            <p><strong>Date:</strong> 2025-01-01</p>
+            <p><strong>Time Slot:</strong> Evening</p>
+            <p><strong>Total Amount:</strong> ₱10,000.00</p>
+            <p><strong>Payment Method:</strong> Credit Card</p>
+            <p><strong>Amount Paid:</strong> ₱10,000.00</p>
+            <p><strong>Payment Date:</strong> 2025-01-01 15:30:00</p>
+
+            <p>
+                <strong>Status:</strong> 
+                <span class="badge bg-success">Paid</span>
+            </p>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Print Button -->
+    <button onclick="window.print()" class="btn btn-primary">🖨 Print Receipt</button>
+
+    <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+signup.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+
+    <!-- Bootstrap -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="mb-5 mt-5">
+    <div class="row justify-content-center mb-4 pt-4">
+        <div class="col-md-6">
+
+            <h2 class="text-center">Sign Up</h2>
+
+            <form class="shadow p-4 bg-white rounded">
+                <div class="mb-3">
+                    <label class="form-label">Agency Name</label>
+                    <input type="text" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+
+            <p class="text-center mt-3">
+                Already have an account? 
+                <a href="login.html">Login</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+venue.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venues</title>
+
+    <!-- Bootstrap -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="ms-3 me-3 mb-5 mt-5">
+
+<div class="container-fluid p-0 venue-page">
+
+    <!-- MOA Arena -->
+    <div class="venue-banner">
+        <img src="images/MOA_Arena.jpg" class="img-fluid w-100 banner-img" alt="MOA Arena">
+        <div class="overlay-text">MOA Arena</div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="venue-title text-dark ms-4">MOA Arena</h2>
+                <p class="venue-description ms-4">
+                    With an impressive land area of over 64,000 square meters, the SM Mall of Asia Arena 
+                    is a world-class facility equipped with state-of-the-art technology.
+                </p>
+
+                <h4 class="venue-subtitle ms-4">Pricing:</h4>
+                <ul class="venue-list ms-4">
+                    <li>Morning: ₱500,000.00</li>
+                    <li>Afternoon: ₱700,000.00</li>
+                    <li>Evening: ₱1,200,000.00</li>
+                </ul>
+
+                <p class="venue-location text-dark ms-4">
+                    Location: SM Mall of Asia, Pasay, Metro Manila
+                </p>
+
+                <a href="dashboard.html" class="btn btn-primary custom-btn ms-4">Book Now</a>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <img src="images/layouts/MOA_Arena_Layout.jpg"
+                     class="img-fluid venue-layout"
+                     alt="MOA Arena Layout">
+            </div>
+        </div>
+    </div>
+
+    <!-- Philippine Arena -->
+    <div class="venue-banner">
+        <img src="images/Philippine_Arena.jpg" class="img-fluid w-100 banner-img" alt="Philippine Arena">
+        <div class="overlay-text">Philippine Arena</div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center flex-row-reverse">
+            <div class="col-md-6">
+                <h2 class="venue-title text-dark">Philippine Arena</h2>
+
+                <p class="venue-description me-3">
+                    Spanning 99,000 square meters, the Philippine Arena stands as a premier venue with 
+                    cutting-edge technology and a seating capacity of 55,000.
+                </p>
+
+                <h4 class="venue-subtitle">Pricing:</h4>
+                <ul class="venue-list">
+                    <li>Morning: ₱800,000.00</li>
+                    <li>Afternoon: ₱1,000,000.00</li>
+                    <li>Evening: ₱1,800,000.00</li>
+                </ul>
+
+                <p class="venue-location text-dark">Location: Bocaue, Bulacan</p>
+
+                <a href="dashboard.html" class="btn btn-primary custom-btn">Book Now</a>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <img src="images/layouts/Philippine_Arena_Layout.jpg"
+                     class="img-fluid venue-layout"
+                     alt="Philippine Arena Layout">
+            </div>
+        </div>
+    </div>
+
+    <!-- Araneta Coliseum -->
+    <div class="venue-banner">
+        <img src="images/Araneta_Coliseum.jpg" class="img-fluid w-100 banner-img" alt="Araneta Coliseum">
+        <div class="overlay-text">Araneta Coliseum</div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="venue-title text-dark ms-4">Araneta Coliseum</h2>
+
+                <p class="venue-description ms-4">
+                    The historic Araneta Coliseum in Cubao has hosted iconic events since 1960 and 
+                    accommodates up to 16,500 people.
+                </p>
+
+                <h4 class="venue-subtitle ms-4">Pricing:</h4>
+                <ul class="venue-list ms-4">
+                    <li>Morning: ₱400,000.00</li>
+                    <li>Afternoon: ₱600,000.00</li>
+                    <li>Evening: ₱1,000,000.00</li>
+                </ul>
+
+                <p class="venue-location text-dark ms-4">Location: Cubao, Quezon City</p>
+
+                <a href="dashboard.html" class="btn btn-primary custom-btn ms-4">Book Now</a>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <img src="images/layouts/Araneta_Coliseum_Layout.jpg"
+                     class="img-fluid venue-layout"
+                     alt="Araneta Coliseum Layout">
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
